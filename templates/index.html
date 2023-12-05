@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Titanic Survival Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('/static/titanic.jpg'); /* Replace 'titanic.jpg' with your image file name and path */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            width: 80%;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8); /* Adjust the opacity as needed */
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            display: inline-block;
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 150px;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            padding: 8px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            var pclass = document.getElementById("pclass").value;
+            var sex = document.getElementById("sex").value;
+            var age = document.getElementById("age").value;
+            var sibsp = document.getElementById("sibsp").value;
+            var parch = document.getElementById("parch").value;
+            var fare = document.getElementById("fare").value;
+            var embarked = document.getElementById("embarked").value;
+
+            if (pclass === "" || sex === "" || age === "" || sibsp === "" || parch === "" || fare === "" || embarked === "") {
+                alert("Please fill in all fields.");
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Titanic Survival Prediction</h1>
+        <form action="/predict" method="post" onsubmit="return validateForm()">
+            <label for="pclass">Passenger Class:</label>
+            <select id="pclass" name="pclass">
+                <option value="1">1st Class</option>
+                <option value="2">2nd Class</option>
+                <option value="3">3rd Class</option>
+            </select><br><br>
+        
+            <label for="sex">Sex:</label>
+            <select id="sex" name="sex">
+                <option value="0">Male</option>
+                <option value="1">Female</option>
+            </select><br><br>
+            
+            <label for="age">Age:</label>
+            <select id="age" name="age">
+                {% for i in range(1, 101) %}
+                    <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+            </select><br><br>
+
+            
+            <label for="sibsp">Number of Siblings/Spouses Aboard:</label>
+            <input type="number" id="sibsp" name="sibsp"><br><br>
+            
+            <label for="parch">Number of Parents/Children Aboard:</label>
+            <input type="number" id="parch" name="parch"><br><br>
+            
+            <label for="fare">Fare:</label>
+            <input type="number" id="fare" name="fare"><br><br>
+            
+            <label for="embarked">Embarked:</label>
+            <select id="embarked" name="embarked">
+                <option value="0">S</option>
+                <option value="1">C</option>
+                <option value="2">Q</option>
+            </select><br><br>
+        
+            <input type="submit" value="Predict">
+        </form>
+
+        {% if prediction_text %}
+            <h2>{{ prediction_text }}</h2>
+        {% endif %}
+    </div>
+</body>
+</html>
